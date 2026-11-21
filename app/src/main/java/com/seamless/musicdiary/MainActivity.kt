@@ -1,4 +1,11 @@
-package com.seamless.musicdiary
+
+
+    
+    
+            
+                                                        ) {
+                                                            Alignment.CenterVertically
+                        package com.seamless.musicdiary
 
 import android.Manifest
 import android.content.ContentUris
