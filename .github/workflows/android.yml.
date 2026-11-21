@@ -1,37 +1,41 @@
-# Seamless
+name: Android build
 
-A personal music diary for Android.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
-## Features
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-- Local music library
-- Android audio playback
-- Music selection
-- Diary entries
-- Local diary storage
-- Basic theme customization
-- Custom launcher icon
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-## Build requirements
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
 
-- Android Studio
-- JDK 17
-- Android SDK 35
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 35
+          build-tools: 35.0.0
+          accept-android-sdk-licenses: true
 
-## Build the APK
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
-Open the project in Android Studio.
+      - name: Build Seamless APK
+        run: gradle assembleDebug
 
-Allow Gradle to sync.
-
-Then build the debug APK using:
-
-    gradle assembleDebug
-
-The APK will be located at:
-
-    app/build/outputs/apk/debug/app-debug.apk
-
-## Developer
-
-Developed by Shaikh Mzanak
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: seamless-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
